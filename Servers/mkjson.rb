@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 =begin
-Copyright 2013 Koaps / Nullworks.
+Copyright 2013 Koaps / Nullworks
 http://nullworks.wordpress.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
