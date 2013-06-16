@@ -1,0 +1,5 @@
+; Comments are supported
+testserver,10.0.0.10
+user.testserver,user@10.0.0.10
+vnc1.testserver,user@10.0.0.10,'-L 5901:127.0.0.1:5901'
+key.testserver,user@10.0.0.10,'-i/path/to/mykey'

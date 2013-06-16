@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+
+=begin
+Copyright 2013 Koaps / Nullworks.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+=end
+
+require 'json'
+
+json = File.read('/path/to/Servers/servers.json')
+s = JSON.parse(json)
+
+if ARGV.count == 0
+    puts "Please enter name or pattern"
+    input = STDIN.gets.chomp.split
+else
+    input = ARGV
+end
+
+p = String.new
+input.each { |i|
+    p += i.to_s + '.*'
+}
+
+m = s.keys.grep(/#{p}/)
+
+conn = ''
+
+if m.count == 1
+    if s[m[0]]['args']
+        puts "\033[0;32;40m Connecting to #{m[0]} ( #{s[m[0]]['user']}@#{s[m[0]]['ip']}:#{s[m[0]]['port']} #{s[m[0]]['args']} ) \033[0m"
+        conn = "ssh -l #{s[m[0]]['user']} -p #{s[m[0]]['port']} #{s[m[0]]['ip']} #{s[m[0]]['args']}"
+    else
+        puts "\033[0;32;40m Connecting to #{m[0]} ( #{s[m[0]]['user']}@#{s[m[0]]['ip']}:#{s[m[0]]['port']} ) \033[0m"
+        conn = "ssh -l #{s[m[0]]['user']} -p #{s[m[0]]['port']} #{s[m[0]]['ip']}"
+    end
+elsif m.count > 1
+    i = 1
+    puts "Found \033[1;37;40m #{m.count} \033[0m matches"
+    m.each { |svr|
+    puts "\033[1;37;40m #{i}. \033[0m#{svr} ( #{s[svr]['user']}@#{s[svr]['ip']}:#{s[svr]['port']} )"
+    i += 1
+    }
+    puts "\033[1;37;44m Enter a number for a server ( or q to quit ): \033[0m"
+    input = STDIN.gets.chomp.to_i
+    if !(1..m.count).include?(input) ; puts "\033[1;31;47m Exiting...\033[0m"; exit end
+    puts "\033[0;32;40m Connecting to #{m[input -1]} \033[0m"
+    conn = "ssh -l #{s[m[input - 1]]['user']} -p #{s[m[input - 1]]['port']} #{s[m[input - 1]]['ip']}"
+else
+    puts "\033[7;31;47m No matches found \033[0m"
+    exit
+end
+
+system conn
