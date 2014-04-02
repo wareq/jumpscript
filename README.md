@@ -1,8 +1,8 @@
 Jumpscript
 ============
 
-1. Create servers list
-
+## Create servers list
+```json
 {
 	"name":	{
 		"user"   : "optional__user", 
@@ -26,10 +26,13 @@ Jumpscript
 		"args"   : "-v"
 	}
 }
+```
 
-2. Call the jumpscript
+## Call the jumpscript
 
-> ss example
+```bash
+ ss example
+```
 
 The script will ask you which of the server you would like to connect:
 
@@ -37,11 +40,12 @@ The script will ask you which of the server you would like to connect:
  2. TEST example ( www-data@my-server-test.example.com:22 )
  Enter a number for a server ( or q to quit ): 
 
-> ss dev example
-
+```bash
+ss dev example
+```
 Only one server match the pattern. The Script will direct connect you to my-server-dev.example.com
 
-3. What has changed?
+## What has changed?
 
 This is fork of nullworks-ss project. Changes:
 * The code has been cleaned up
