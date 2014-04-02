@@ -1,52 +1,52 @@
-nullworks-ss
+Jumpscript
 ============
 
-Ruby based secure shell wrapper using JSON
+1. Create servers list
 
-This is a script I use to jump to different servers I manage.
-I wrote this script because a lot of the time I'm connected to one or more VPN's and DNS name resolution isn't always possible. I also might want to use different usernames or host keys, or setup a SSH tunnel. This script can do all of that.
+{
+	"name":	{
+		"user"   : "optional__user", 
+		"ip"     : "host_or_ip", 
+		"port"   : 22, 
+		"id_rsa" : "optional__path_to_rsa_key", 
+		"args"   : "optional__additional arguments"
+	},
+	"DEV example":	{
+		"user"   : "www-data", 
+		"ip"     : "my-server-dev.example.com", 
+		"port"   : 22, 
+		"id_rsa" : "/Users/wareq/.ssh/id_rsa", 
+		"args"   : "-v"
+	},
+	"TEST example":	{
+		"user"   : "www-data", 
+		"ip"     : "my-server-test.example.com", 
+		"port"   : 22, 
+		"id_rsa" : "/Users/wareq/.ssh/id_rsa", 
+		"args"   : "-v"
+	}
+}
 
-## WARNING:
+2. Call the jumpscript
 
-It's not perfect, far from it I'm sure, one issue I know of that I haven't fixed is when trying to use SSH tunnels you have to make an extact match, or at least exact enough that only one match is made. There's a bug in the way the menu is made that breaks the arg passing to SSH.
+> ss example
 
-Also note that I named the script ss as short hand for SSH. There's already an existing command on linux called ss (socket statistics), so if you don't use it or care, feel free to use the ss name, it does make it a quick command to use.
+The script will ask you which of the server you would like to connect:
 
-## USE:
+ 1. DEV example ( www-data@my-server-dev.example.com:22 )
+ 2. TEST example ( www-data@my-server-test.example.com:22 )
+ Enter a number for a server ( or q to quit ): 
 
-To use the script the following is done:
-* Create a file called servers.txt in a directory called Servers (you can change this if you want, just mod the scripts)
-* Add server lines that follow this pattern: NAME,CONN,OPTIONS
-* Run the mkjson.rb script
-* Connect to a server with: ss NAME
+> ss dev example
 
-## EXAMPLES:
+Only one server match the pattern. The Script will direct connect you to my-server-dev.example.com
 
-##### CONN - represents the connection which can be in a few forms, examples:
-* IP - 10.0.0.10 
-* USER@IP - user@10.0.0.10
-* IP:PORT - 10.0.0.10:2222
-* USER@IP:PORT - user@10.0.0.10:2222
+3. What has changed?
 
-##### NAME - is a more than a hostname, but a pattern to be used to represent the connection, examples:
-* SERVER - testserver
-* USER.SERVER - user.testserver
-* SERVICE.SERVER - vnc1.testserver
-
-##### OPTIONS - these are ssh options passed through
-* Tunneling - '-L 5901:127.0.0.1:5901'
-* Hostkeys - '-i/path/to/mykey'
-
-##### CONN STRINGS:
-* testserver,10.0.0.10
-* user.testserver,user@10.0.0.10
-* vnc1.testserver,user@10.0.0.10,'-L 5901:127.0.0.1:5901'
-* key.testserver,user@10.0.0.10,'-i/path/to/mykey'
-
-After running the mkjson.rb you can connect to any of the connections above using regex patterns:
-
-* ss test - matches all 4 and gives a menu with numbers to pick
-* ss u t - matches user.testserver only
-* ss vnc - matches vnc1.testserver only
-
-That's the basics.
+This is fork of nullworks-ss project. Changes:
+* The code has been cleaned up
+* "Connect" method was extracted
+* New "id_rsa" parameter in servers.json
+* I have resigned from converting csv to json. If you would like to add new host please edit servers.json file.
+* Flow of the script was changed. Get connection name (or its parts) only from script execution arguments. Don't prompt for it.
+* Texts and colors has changed little 
