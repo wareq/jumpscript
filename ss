@@ -23,7 +23,8 @@ Looking for connections that fit your name.
 * For more records the script will prompt you for which connection you meant
 =end
 
-servers_path = 'servers.json'
+# As a default the servers definition should be in the same directory as script. Feel free to change this!
+servers_path = './servers.json'
 
 require 'json'
 json = File.read(servers_path)
@@ -41,6 +42,9 @@ m = s.keys.grep(/#{p}/i)
 conn = ''
 
 def connect(name, user, ip, port, args, id_rsa)
+	if port.empty?
+		port = "22"
+	end	
     puts "\033[0;32;mConnecting to " + name + " ( \033[1;32;m" + user + "@" + ip + ":" + port + "\033[0;32;m ) \033[0m"
         conn = "ssh -l " + user + " -p" + port + " " + ip
     if !id_rsa.empty?
@@ -61,7 +65,7 @@ elsif m.count > 1
     i = 1
     puts "Found \033[1;37;m #{m.count} \033[0m matches"
     m.each { |svr|
-    puts "\033[1;37;m #{i}. \033[0m#{svr} ( #{s[svr]['user']}@#{s[svr]['ip']}:#{s[svr]['port']} )"
+    puts "\033[1;37;m #{i}. \033[0m#{svr} ( #{s[svr]['user']}@#{s[svr]['ip']} )"
     i += 1
     }
     puts "\033[1;37;44m Enter a number for a server ( or q to quit ): \033[0m"

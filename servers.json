@@ -1,19 +1,14 @@
 {
 	"name":	{
 		"user"   : "optional__user", 
-		"ip"     : "host_or_ip", 
-		"port"   : 22, 
-		"id_rsa" : "optional__path_to_rsa_key", 
-		"args"   : "optional__additional arguments"
+		"ip"     : "host_or_ip"
 	},
-	"DEV example":	{
+	"example with rsa key":	{
 		"user"   : "www-data", 
 		"ip"     : "my-server-dev.example.com", 
-		"port"   : 22, 
-		"id_rsa" : "/Users/wareq/.ssh/id_rsa", 
-		"args"   : "-v"
+		"id_rsa" : "/Users/wareq/.ssh/id_rsa"
 	},
-	"TEST example":	{
+	"example all possible parameters":	{
 		"user"   : "www-data", 
 		"ip"     : "my-server-test.example.com", 
 		"port"   : 22, 
